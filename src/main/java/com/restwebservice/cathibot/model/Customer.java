@@ -18,11 +18,35 @@ public class Customer {
     @Column
     private int receivedFiles;
 
+    @Column
+    private String alarmDateInitial;
+
+    @Column
+    private String alarmDateFifth;
+
+    @Column
+    private String alarmDateSeventh;
+
     public Customer() { }
 
-    public Customer(List<File> files, int receivedFiles) {
+    public Customer(List<File> files, int receivedFiles, String alarmDateInitial, String alarmDateFifth, String alarmDateSeventh) {
         this.files = files;
         this.receivedFiles = receivedFiles;
+        this.alarmDateInitial = alarmDateInitial;
+        this.alarmDateFifth = alarmDateFifth;
+        this.alarmDateSeventh = alarmDateSeventh;
+    }
+
+    public String getAlarmDateInitial() {
+        return alarmDateInitial;
+    }
+
+    public String getAlarmDateFifth() {
+        return alarmDateFifth;
+    }
+
+    public String getAlarmDateSeventh() {
+        return alarmDateSeventh;
     }
 
     public int getCustomerId() {
@@ -47,5 +71,17 @@ public class Customer {
 
     public void setReceivedFiles(int receivedFiles) {
         this.receivedFiles = receivedFiles;
+    }
+
+    public void setAlarmDateInitial(String alarmDateInitial) {
+        this.alarmDateInitial = alarmDateInitial;
+    }
+
+    public void setAlarmDateFifth(String alarmDateFifth) {
+        this.alarmDateFifth = alarmDateFifth;
+    }
+
+    public void setAlarmDateSeventh(String alarmDateSeventh) {
+        this.alarmDateSeventh = alarmDateSeventh;
     }
 }

@@ -28,16 +28,28 @@ public class File {
     private double amount;
     @Column
     private String dateMoved;
+    @Column
+    private String status;
+    @Column
+    private String customerEmail;
 
     public File() { }
 
-    public File(Customer customer, String dateReceived, String alertSent, int noRecords, double amount, String dateMoved) {
+    public File(Customer customer, String dateReceived, String alertSent, int noRecords, double amount, String dateMoved, String status, String customerEmail) {
         this.customer = customer;
         this.dateReceived = dateReceived;
         this.alertSent = alertSent;
         this.noRecords = noRecords;
         this.amount = amount;
         this.dateMoved = dateMoved;
+    }
+
+    public String getCustomerEmail() {
+        return customerEmail;
+    }
+
+    public String getStatus() {
+        return status;
     }
 
     public int getFileId() {
@@ -66,6 +78,14 @@ public class File {
 
     public String getDateMoved() {
         return dateMoved;
+    }
+
+    public void setCustomerEmail(String customerEmail) {
+        this.customerEmail = customerEmail;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public void setFileId(int fileId) {

@@ -48,4 +48,28 @@ public class CustomerController {
         Customer c = customerDao.save(findCustomer);
         return new ResponseEntity<>(c, HttpStatus.OK);
     }
+
+    @RequestMapping(path = "/alarm1/{customerId}", method = RequestMethod.PUT)
+    public ResponseEntity<Customer> updateClaimById1(@PathVariable int customerId, @RequestBody Customer customer){
+        Customer findCustomer = customerDao.findByCustomerId(customerId);
+        findCustomer.setAlarmDateInitial(customer.getAlarmDateInitial());
+        Customer c = customerDao.save(findCustomer);
+        return new ResponseEntity<>(c, HttpStatus.OK);
+    }
+
+    @RequestMapping(path = "/alarm5/{customerId}", method = RequestMethod.PUT)
+    public ResponseEntity<Customer> updateClaimById5(@PathVariable int customerId, @RequestBody Customer customer){
+        Customer findCustomer = customerDao.findByCustomerId(customerId);
+        findCustomer.setAlarmDateFifth(customer.getAlarmDateFifth());
+        Customer c = customerDao.save(findCustomer);
+        return new ResponseEntity<>(c, HttpStatus.OK);
+    }
+
+    @RequestMapping(path = "/alarm7/{customerId}", method = RequestMethod.PUT)
+    public ResponseEntity<Customer> updateClaimById7(@PathVariable int customerId, @RequestBody Customer customer){
+        Customer findCustomer = customerDao.findByCustomerId(customerId);
+        findCustomer.setAlarmDateSeventh(customer.getAlarmDateSeventh());
+        Customer c = customerDao.save(findCustomer);
+        return new ResponseEntity<>(c, HttpStatus.OK);
+    }
 }

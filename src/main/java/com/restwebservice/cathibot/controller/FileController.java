@@ -40,15 +40,18 @@ public class FileController {
         return new ResponseEntity<>(file, HttpStatus.OK);
     }
 
-    @RequestMapping(path = "/{fileId}", method = RequestMethod.PUT)
+    @RequestMapping(path = "/status/{fileId}", method = RequestMethod.PUT)
     public ResponseEntity<File> updateById(@PathVariable int fileId, @RequestBody File file){
         File findFile = fileDao.findByFileId(fileId);
-        findFile.setCustomer(file.getCustomer());
-        findFile.setDateReceived(file.getDateReceived());
-        findFile.setAlertSent(file.getAlertSent());
-        findFile.setNoRecords(file.getNoRecords());
-        findFile.setAmount(file.getAmount());
-        findFile.setDateMoved(file.getDateMoved());
+
+        findFile.setCustomer(findFile.getCustomer());
+        findFile.setDateReceived(findFile.getDateReceived());
+        findFile.setAlertSent(findFile.getAlertSent());
+        findFile.setNoRecords(findFile.getNoRecords());
+        findFile.setAmount(findFile.getAmount());
+        findFile.setDateMoved(findFile.getDateMoved());
+
+        findFile.setStatus(file.getStatus());
         File f = fileDao.save(findFile);
         return new ResponseEntity<>(f, HttpStatus.OK);
     }
