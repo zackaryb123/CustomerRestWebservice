@@ -2,11 +2,14 @@ package com.restwebservice.cathibot.controller;
 
 import com.restwebservice.cathibot.dao.FileDao;
 import com.restwebservice.cathibot.model.File;
+import com.restwebservice.cathibot.service.FileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.mail.MessagingException;
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -15,6 +18,9 @@ import java.util.List;
 public class FileController {
     @Autowired
     FileDao fileDao;
+
+    @Autowired
+    FileService fileService;
 
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<List<File>> getAll() {
@@ -41,7 +47,7 @@ public class FileController {
     }
 
     @RequestMapping(path = "/status/{fileId}", method = RequestMethod.PUT)
-    public ResponseEntity<File> updateById(@PathVariable int fileId, @RequestBody File file){
+    public ResponseEntity<File> updateById(@PathVariable int fileId, @RequestBody File file) throws IOException, MessagingException {
         File findFile = fileDao.findByFileId(fileId);
 
         findFile.setCustomer(findFile.getCustomer());
@@ -53,6 +59,10 @@ public class FileController {
 
         findFile.setStatus(file.getStatus());
         File f = fileDao.save(findFile);
+
+        if(file.getStatus().equals("Moved")){
+            fileService.sendmail(findFile);
+        }
         return new ResponseEntity<>(f, HttpStatus.OK);
     }
 }

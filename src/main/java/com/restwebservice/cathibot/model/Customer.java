@@ -12,6 +12,9 @@ public class Customer {
     @Column(name = "customerId")
     private int customerId;
 
+    @Column
+    private String customerEmail;
+
     @OneToMany(mappedBy = "customer")
     private List<File> files;
 
@@ -29,12 +32,16 @@ public class Customer {
 
     public Customer() { }
 
-    public Customer(List<File> files, int receivedFiles, String alarmDateInitial, String alarmDateFifth, String alarmDateSeventh) {
+    public Customer(List<File> files, int receivedFiles, String alarmDateInitial, String alarmDateFifth, String alarmDateSeventh, String customerEmail) {
         this.files = files;
         this.receivedFiles = receivedFiles;
         this.alarmDateInitial = alarmDateInitial;
         this.alarmDateFifth = alarmDateFifth;
         this.alarmDateSeventh = alarmDateSeventh;
+    }
+
+    public String getCustomerEmail() {
+        return customerEmail;
     }
 
     public String getAlarmDateInitial() {
@@ -59,6 +66,10 @@ public class Customer {
 
     public int getReceivedFiles() {
         return receivedFiles;
+    }
+
+    public void setCustomerEmail(String customerEmail) {
+        this.customerEmail = customerEmail;
     }
 
     public void setCustomerId(int customerId) {
