@@ -1,8 +1,11 @@
 package com.restwebservice.cathibot.controller;
 
+import com.restwebservice.cathibot.dao.CustomerDao;
 import com.restwebservice.cathibot.dao.FileDao;
+import com.restwebservice.cathibot.model.Customer;
 import com.restwebservice.cathibot.model.File;
 import com.restwebservice.cathibot.service.FileService;
+import com.restwebservice.cathibot.service.MailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +23,10 @@ public class FileController {
     FileDao fileDao;
 
     @Autowired
-    FileService fileService;
+    MailService mailService;
+
+    @Autowired
+    CustomerDao customerDao;
 
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<List<File>> getAll() {
@@ -46,8 +52,8 @@ public class FileController {
         return new ResponseEntity<>(file, HttpStatus.OK);
     }
 
-    @RequestMapping(path = "/status/{fileId}", method = RequestMethod.PUT)
-    public ResponseEntity<File> updateById(@PathVariable int fileId, @RequestBody File file) throws IOException, MessagingException {
+    @RequestMapping(path = "/status/{customerId}/{fileId}", method = RequestMethod.PUT)
+    public ResponseEntity<File> updateById(@PathVariable int customerId, @PathVariable int fileId, @RequestBody File file) throws IOException, MessagingException {
         File findFile = fileDao.findByFileId(fileId);
 
         findFile.setCustomer(findFile.getCustomer());
@@ -60,9 +66,11 @@ public class FileController {
         findFile.setStatus(file.getStatus());
         File f = fileDao.save(findFile);
 
-        if(file.getStatus().equals("Moved")){
-            fileService.sendmail(findFile);
+        if(findFile.getStatus().equals("Moved") && file.getStatus().equals("Moved")){
+            Customer customer = customerDao.findByCustomerId(customerId);
+            mailService.movedFileMail(customer, findFile);
         }
+
         return new ResponseEntity<>(f, HttpStatus.OK);
     }
 }
