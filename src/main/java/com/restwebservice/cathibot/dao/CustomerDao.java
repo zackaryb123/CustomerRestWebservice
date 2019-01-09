@@ -4,8 +4,10 @@ import com.restwebservice.cathibot.model.Customer;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
-public interface CustomerDao  extends CrudRepository<Customer, Integer> {
-    Customer findByCustomerId(int claimId);
-    Customer deleteByCustomerId(int claimId);
+public interface CustomerDao  extends CrudRepository<Customer, String> {
+    Customer findByCustomerId(String customerId);
+    Customer deleteByCustomerId(int customerId);
 }

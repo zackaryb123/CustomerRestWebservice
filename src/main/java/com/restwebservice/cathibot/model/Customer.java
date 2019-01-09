@@ -1,6 +1,7 @@
 package com.restwebservice.cathibot.model;
 
 import javax.persistence.*;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -8,9 +9,8 @@ import java.util.List;
 public class Customer {
 
     @Id
-    @GeneratedValue
     @Column(name = "customerId")
-    private int customerId;
+    private String customerId;
 
     @Column
     private String customerEmail;
@@ -20,6 +20,9 @@ public class Customer {
 
     @Column
     private int receivedFiles;
+
+    @Column
+    private Date dateTransfered;
 
     @Column
     private String alarmDateInitial;
@@ -32,12 +35,20 @@ public class Customer {
 
     public Customer() { }
 
-    public Customer(List<File> files, int receivedFiles, String alarmDateInitial, String alarmDateFifth, String alarmDateSeventh, String customerEmail) {
+    public Customer(List<File> files, int receivedFiles, String alarmDateInitial, String alarmDateFifth, String alarmDateSeventh, String customerEmail, Date dateTransfered) {
         this.files = files;
         this.receivedFiles = receivedFiles;
         this.alarmDateInitial = alarmDateInitial;
         this.alarmDateFifth = alarmDateFifth;
         this.alarmDateSeventh = alarmDateSeventh;
+    }
+
+    public Date getDateTransfered() {
+        return dateTransfered;
+    }
+
+    public void setDateTransfered(Date dateTransfered) {
+        this.dateTransfered = dateTransfered;
     }
 
     public String getCustomerEmail() {
@@ -56,7 +67,7 @@ public class Customer {
         return alarmDateSeventh;
     }
 
-    public int getCustomerId() {
+    public String getCustomerId() {
         return customerId;
     }
 
@@ -72,7 +83,7 @@ public class Customer {
         this.customerEmail = customerEmail;
     }
 
-    public void setCustomerId(int customerId) {
+    public void setCustomerId(String customerId) {
         this.customerId = customerId;
     }
 

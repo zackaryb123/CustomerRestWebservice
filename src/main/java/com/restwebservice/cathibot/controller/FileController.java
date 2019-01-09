@@ -53,7 +53,7 @@ public class FileController {
     }
 
     @RequestMapping(path = "/status/{customerId}/{fileId}", method = RequestMethod.PUT)
-    public ResponseEntity<File> updateById(@PathVariable int customerId, @PathVariable int fileId, @RequestBody File file) throws IOException, MessagingException {
+    public ResponseEntity<File> updateById(@PathVariable String customerId, @PathVariable int fileId, @RequestBody File file) throws IOException, MessagingException {
         File findFile = fileDao.findByFileId(fileId);
 
         findFile.setCustomer(findFile.getCustomer());

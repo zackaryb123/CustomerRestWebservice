@@ -2,6 +2,8 @@ package com.restwebservice.cathibot.controller;
 
 import com.restwebservice.cathibot.dao.CustomerDao;
 import com.restwebservice.cathibot.model.Customer;
+import com.restwebservice.cathibot.model.File;
+import com.restwebservice.cathibot.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +20,9 @@ public class CustomerController {
     @Autowired
     CustomerDao customerDao;
 
+    @Autowired
+    CustomerService customerService;
+
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<List<Customer>> getAllClaim() {
         List<Customer> list = (List<Customer>) customerDao.findAll();
@@ -31,7 +36,7 @@ public class CustomerController {
     }
 
     @RequestMapping(path = "/{customerId}", method = RequestMethod.GET)
-    public ResponseEntity<Customer> getClaimById(@PathVariable int customerId) {
+    public ResponseEntity<Customer> getClaimById(@PathVariable String customerId) {
         Customer customer = customerDao.findByCustomerId(customerId);
         return new ResponseEntity<>(customer, HttpStatus.OK);
     }
@@ -43,7 +48,7 @@ public class CustomerController {
     }
 
     @RequestMapping(path = "/{customerId}", method = RequestMethod.PUT)
-    public ResponseEntity<Customer> updateClaimById(@PathVariable int customerId, @RequestBody Customer customer){
+    public ResponseEntity<Customer> updateClaimById(@PathVariable String customerId, @RequestBody Customer customer){
         Customer findCustomer = customerDao.findByCustomerId(customerId);
         findCustomer.setFiles(customer.getFiles());
         findCustomer.setReceivedFiles(customer.getReceivedFiles());
@@ -53,7 +58,7 @@ public class CustomerController {
     }
 
     @RequestMapping(path = "/alarm1/{customerId}", method = RequestMethod.PUT)
-    public ResponseEntity<Customer> updateClaimById1(@PathVariable int customerId, @RequestBody Customer customer){
+    public ResponseEntity<Customer> updateClaimById1(@PathVariable String customerId, @RequestBody Customer customer){
         Customer findCustomer = customerDao.findByCustomerId(customerId);
         findCustomer.setAlarmDateInitial(customer.getAlarmDateInitial());
         Customer c = customerDao.save(findCustomer);
@@ -61,7 +66,7 @@ public class CustomerController {
     }
 
     @RequestMapping(path = "/alarm5/{customerId}", method = RequestMethod.PUT)
-    public ResponseEntity<Customer> updateClaimById5(@PathVariable int customerId, @RequestBody Customer customer){
+    public ResponseEntity<Customer> updateClaimById5(@PathVariable String customerId, @RequestBody Customer customer){
         Customer findCustomer = customerDao.findByCustomerId(customerId);
         findCustomer.setAlarmDateFifth(customer.getAlarmDateFifth());
         Customer c = customerDao.save(findCustomer);
@@ -69,10 +74,17 @@ public class CustomerController {
     }
 
     @RequestMapping(path = "/alarm7/{customerId}", method = RequestMethod.PUT)
-    public ResponseEntity<Customer> updateClaimById7(@PathVariable int customerId, @RequestBody Customer customer) throws IOException, MessagingException {
+    public ResponseEntity<Customer> updateClaimById7(@PathVariable String customerId, @RequestBody Customer customer) throws IOException, MessagingException {
         Customer findCustomer = customerDao.findByCustomerId(customerId);
         findCustomer.setAlarmDateSeventh(customer.getAlarmDateSeventh());
         Customer c = customerDao.save(findCustomer);
         return new ResponseEntity<>(c, HttpStatus.OK);
+    }
+
+    @RequestMapping(path = "/updateDirectory", method = RequestMethod.GET)
+    public ResponseEntity<List<Customer>> updateCustomers() {
+        customerService.updateDirectory();
+        List<Customer> list = (List<Customer>) customerDao.findAll();
+        return new ResponseEntity<>(list, HttpStatus.OK);
     }
 }
