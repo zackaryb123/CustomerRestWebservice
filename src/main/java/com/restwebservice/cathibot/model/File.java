@@ -19,6 +19,9 @@ public class File {
     private Customer customer;
 
     @Column
+    private String fileName;
+
+    @Column
     private String dateReceived;
     @Column
     private String alertSent;
@@ -33,13 +36,21 @@ public class File {
 
     public File() { }
 
-    public File(Customer customer, String dateReceived, String alertSent, int noRecords, double amount, String dateMoved, String status) {
+    public File(Customer customer, String dateReceived, String alertSent, int noRecords, double amount, String dateMoved, String status, String fileName) {
         this.customer = customer;
         this.dateReceived = dateReceived;
         this.alertSent = alertSent;
         this.noRecords = noRecords;
         this.amount = amount;
         this.dateMoved = dateMoved;
+    }
+
+    public String getFileName() {
+        return fileName;
+    }
+
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
     }
 
     public String getStatus() {

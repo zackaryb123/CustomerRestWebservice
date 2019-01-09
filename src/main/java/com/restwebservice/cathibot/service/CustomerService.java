@@ -11,10 +11,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
 import java.io.FilenameFilter;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Date;
+import java.util.*;
 import java.util.function.Consumer;
 
 @Service
@@ -24,6 +21,9 @@ public class CustomerService {
 
     @Autowired
     FileDao fileDao;
+
+    @Autowired
+    FileService fileService;
 
     public void updateDirectory() {
         ArrayList<String> folderPathAddress = new ArrayList<>();
@@ -44,16 +44,21 @@ public class CustomerService {
         for (int i = 0; i < directories.length; i++)
         {
             int count = 0;
+            HashMap<com.restwebservice.cathibot.model.File, String> fileList =  new HashMap<>();
             for (int j = 0; j < folderPathAddress.size(); j++)
             {
                 String client = StringUtils.substringBetween(folderPathAddress.get(j), "Clients\\\\", "\\\\");
-
+                File[] list = new File("C:\\Users\\zackb\\Desktop\\GSA\\Clients\\"+client).listFiles();
                 if (directories[i].equals(client))
                 {
+                    com.restwebservice.cathibot.model.File f = new com.restwebservice.cathibot.model.File();
+                    f.setFileName(list[count].getName());
+                    fileList.put(f,client);
                     count++;
                 }
             }
             updateCustomers(directories[i], count, i + 1, today);
+            fileService.updateFiles(fileList);
         }
 
 //         int columnPointer = directories.length + 1;
@@ -76,6 +81,7 @@ public class CustomerService {
         if (customer != null)
         {
             customer.setReceivedFiles(fileCount);
+//            customer.setFiles(fileList);
         }
         else
         {
@@ -118,4 +124,6 @@ public class CustomerService {
             ex.printStackTrace();
         }
     }
+
+
 }
