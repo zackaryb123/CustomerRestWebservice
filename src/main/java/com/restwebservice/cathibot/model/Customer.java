@@ -16,7 +16,7 @@ public class Customer {
     private String customerEmail;
 
     @OneToMany(mappedBy = "customer")
-    private List<File> files;
+    private List<TaxFile> taxFiles;
 
     @Column
     private int receivedFiles;
@@ -35,8 +35,8 @@ public class Customer {
 
     public Customer() { }
 
-    public Customer(List<File> files, int receivedFiles, String alarmDateInitial, String alarmDateFifth, String alarmDateSeventh, String customerEmail, Date dateTransfered) {
-        this.files = files;
+    public Customer(List<TaxFile> taxFiles, int receivedFiles, String alarmDateInitial, String alarmDateFifth, String alarmDateSeventh, String customerEmail, Date dateTransfered) {
+        this.taxFiles = taxFiles;
         this.receivedFiles = receivedFiles;
         this.alarmDateInitial = alarmDateInitial;
         this.alarmDateFifth = alarmDateFifth;
@@ -71,8 +71,8 @@ public class Customer {
         return customerId;
     }
 
-    public List<File> getFiles() {
-        return files;
+    public List<TaxFile> getTaxFiles() {
+        return taxFiles;
     }
 
     public int getReceivedFiles() {
@@ -87,8 +87,8 @@ public class Customer {
         this.customerId = customerId;
     }
 
-    public void setFiles(List<File> files) {
-        this.files = files;
+    public void setTaxFiles(List<TaxFile> taxFiles) {
+        this.taxFiles = taxFiles;
     }
 
     public void setReceivedFiles(int receivedFiles) {
@@ -105,5 +105,19 @@ public class Customer {
 
     public void setAlarmDateSeventh(String alarmDateSeventh) {
         this.alarmDateSeventh = alarmDateSeventh;
+    }
+
+    @Override
+    public String toString() {
+        return "Customer{" +
+                "customerId='" + customerId + '\'' +
+                ", customerEmail='" + customerEmail + '\'' +
+                ", taxFiles=" + taxFiles +
+                ", receivedFiles=" + receivedFiles +
+                ", dateTransfered=" + dateTransfered +
+                ", alarmDateInitial='" + alarmDateInitial + '\'' +
+                ", alarmDateFifth='" + alarmDateFifth + '\'' +
+                ", alarmDateSeventh='" + alarmDateSeventh + '\'' +
+                '}';
     }
 }

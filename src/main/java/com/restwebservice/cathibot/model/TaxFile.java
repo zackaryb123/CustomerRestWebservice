@@ -6,7 +6,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "FILE_TABLE")
-public class File {
+public class TaxFile {
 
     @Id
     @GeneratedValue
@@ -34,9 +34,9 @@ public class File {
     @Column
     private String status;
 
-    public File() { }
+    public TaxFile() { }
 
-    public File(Customer customer, String dateReceived, String alertSent, int noRecords, double amount, String dateMoved, String status, String fileName) {
+    public TaxFile(Customer customer, String dateReceived, String alertSent, int noRecords, double amount, String dateMoved, String status, String fileName) {
         this.customer = customer;
         this.dateReceived = dateReceived;
         this.alertSent = alertSent;

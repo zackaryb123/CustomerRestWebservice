@@ -3,8 +3,7 @@ package com.restwebservice.cathibot.controller;
 import com.restwebservice.cathibot.dao.CustomerDao;
 import com.restwebservice.cathibot.dao.FileDao;
 import com.restwebservice.cathibot.model.Customer;
-import com.restwebservice.cathibot.model.File;
-import com.restwebservice.cathibot.service.FileService;
+import com.restwebservice.cathibot.model.TaxFile;
 import com.restwebservice.cathibot.service.MailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -29,46 +28,46 @@ public class FileController {
     CustomerDao customerDao;
 
     @RequestMapping(method = RequestMethod.GET)
-    public ResponseEntity<List<File>> getAll() {
-        List<File> list = (List<File>) fileDao.findAll();
+    public ResponseEntity<List<TaxFile>> getAll() {
+        List<TaxFile> list = (List<TaxFile>) fileDao.findAll();
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<File> post(@RequestBody File file) {
-        File f = fileDao.save(file);
+    public ResponseEntity<TaxFile> post(@RequestBody TaxFile taxFile) {
+        TaxFile f = fileDao.save(taxFile);
         return new ResponseEntity<>(f, HttpStatus.OK);
     }
 
     @RequestMapping(path = "/{fileId}", method = RequestMethod.GET)
-    public ResponseEntity<File> getById(@PathVariable int fileId) {
-        File file = fileDao.findByFileId(fileId);
-        return new ResponseEntity<>(file, HttpStatus.OK);
+    public ResponseEntity<TaxFile> getById(@PathVariable int fileId) {
+        TaxFile taxFile = fileDao.findByFileId(fileId);
+        return new ResponseEntity<>(taxFile, HttpStatus.OK);
     }
 
     @RequestMapping(path = "/{fileId}", method = RequestMethod.DELETE)
-    public ResponseEntity<File> deleteById(@PathVariable int fileId){
-        File file = fileDao.deleteByFileId(fileId);
-        return new ResponseEntity<>(file, HttpStatus.OK);
+    public ResponseEntity<TaxFile> deleteById(@PathVariable int fileId){
+        TaxFile taxFile = fileDao.deleteByFileId(fileId);
+        return new ResponseEntity<>(taxFile, HttpStatus.OK);
     }
 
     @RequestMapping(path = "/status/{customerId}/{fileId}", method = RequestMethod.PUT)
-    public ResponseEntity<File> updateById(@PathVariable String customerId, @PathVariable int fileId, @RequestBody File file) throws IOException, MessagingException {
-        File findFile = fileDao.findByFileId(fileId);
+    public ResponseEntity<TaxFile> updateById(@PathVariable String customerId, @PathVariable int fileId, @RequestBody TaxFile taxFile) throws IOException, MessagingException {
+        TaxFile findTaxFile = fileDao.findByFileId(fileId);
 
-        findFile.setCustomer(findFile.getCustomer());
-        findFile.setDateReceived(findFile.getDateReceived());
-        findFile.setAlertSent(findFile.getAlertSent());
-        findFile.setNoRecords(findFile.getNoRecords());
-        findFile.setAmount(findFile.getAmount());
-        findFile.setDateMoved(findFile.getDateMoved());
+        findTaxFile.setCustomer(findTaxFile.getCustomer());
+        findTaxFile.setDateReceived(findTaxFile.getDateReceived());
+        findTaxFile.setAlertSent(findTaxFile.getAlertSent());
+        findTaxFile.setNoRecords(findTaxFile.getNoRecords());
+        findTaxFile.setAmount(findTaxFile.getAmount());
+        findTaxFile.setDateMoved(findTaxFile.getDateMoved());
 
-        findFile.setStatus(file.getStatus());
-        File f = fileDao.save(findFile);
+        findTaxFile.setStatus(taxFile.getStatus());
+        TaxFile f = fileDao.save(findTaxFile);
 
-        if(findFile.getStatus().equals("Moved") && file.getStatus().equals("Moved")){
+        if(findTaxFile.getStatus().equals("Moved") && taxFile.getStatus().equals("Moved")){
             Customer customer = customerDao.findByCustomerId(customerId);
-            mailService.movedFileMail(customer, findFile);
+            mailService.movedFileMail(customer, findTaxFile);
         }
 
         return new ResponseEntity<>(f, HttpStatus.OK);

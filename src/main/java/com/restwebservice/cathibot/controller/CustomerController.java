@@ -2,7 +2,6 @@ package com.restwebservice.cathibot.controller;
 
 import com.restwebservice.cathibot.dao.CustomerDao;
 import com.restwebservice.cathibot.model.Customer;
-import com.restwebservice.cathibot.model.File;
 import com.restwebservice.cathibot.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -50,7 +49,7 @@ public class CustomerController {
     @RequestMapping(path = "/{customerId}", method = RequestMethod.PUT)
     public ResponseEntity<Customer> updateClaimById(@PathVariable String customerId, @RequestBody Customer customer){
         Customer findCustomer = customerDao.findByCustomerId(customerId);
-        findCustomer.setFiles(customer.getFiles());
+        findCustomer.setTaxFiles(customer.getTaxFiles());
         findCustomer.setReceivedFiles(customer.getReceivedFiles());
         findCustomer.setCustomerEmail(customer.getCustomerEmail());
         Customer c = customerDao.save(findCustomer);

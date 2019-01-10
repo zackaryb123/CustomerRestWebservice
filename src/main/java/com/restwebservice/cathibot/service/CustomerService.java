@@ -3,6 +3,7 @@ package com.restwebservice.cathibot.service;
 import com.restwebservice.cathibot.dao.CustomerDao;
 import com.restwebservice.cathibot.dao.FileDao;
 import com.restwebservice.cathibot.model.Customer;
+import com.restwebservice.cathibot.model.TaxFile;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -10,7 +11,6 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
-import java.io.FilenameFilter;
 import java.util.*;
 import java.util.function.Consumer;
 
@@ -44,21 +44,21 @@ public class CustomerService {
         for (int i = 0; i < directories.length; i++)
         {
             int count = 0;
-            HashMap<com.restwebservice.cathibot.model.File, String> fileList =  new HashMap<>();
+            HashMap<TaxFile, String> fileList =  new HashMap<>();
             for (int j = 0; j < folderPathAddress.size(); j++)
             {
                 String client = StringUtils.substringBetween(folderPathAddress.get(j), "Clients\\\\", "\\\\");
                 File[] list = new File("C:\\Users\\zackb\\Desktop\\GSA\\Clients\\"+client).listFiles();
                 if (directories[i].equals(client))
                 {
-                    com.restwebservice.cathibot.model.File f = new com.restwebservice.cathibot.model.File();
+                    TaxFile f = new TaxFile();
                     f.setFileName(list[count].getName());
-                    fileList.put(f,client);
+                    fileList.put(f, client);
                     count++;
                 }
             }
-            updateCustomers(directories[i], count, i + 1, today);
-            fileService.updateFiles(fileList);
+            updateCustomers(directories[i], count, i + 1, today, fileList);
+//            fileService.updateFiles(fileList);
         }
 
 //         int columnPointer = directories.length + 1;
@@ -75,13 +75,14 @@ public class CustomerService {
         // System.out.println(Arrays.toString(directories));
     }
 
-    public void updateCustomers(String client, int fileCount, int clientNo, Date date)
+    public void updateCustomers(String client, int fileCount, int clientNo, Date date, HashMap<TaxFile, String> taxFileList)
     {
         Customer customer = customerDao.findByCustomerId(client);
         if (customer != null)
         {
             customer.setReceivedFiles(fileCount);
-//            customer.setFiles(fileList);
+//            customer.setTaxFiles(taxFileList);
+            customerDao.save(customer);
         }
         else
         {
@@ -89,8 +90,9 @@ public class CustomerService {
             customer.setCustomerId(client);
             customer.setReceivedFiles(fileCount);
             customer.setDateTransfered(date);
+            customerDao.save(customer);
+            fileService.updateFiles(taxFileList);
         }
-        customerDao.save(customer);
     }
 
     public static void fetchFiles(File dir, Consumer<File> fileConsumer)

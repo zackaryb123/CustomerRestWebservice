@@ -1,9 +1,11 @@
 package com.restwebservice.cathibot.dao;
 
-import com.restwebservice.cathibot.model.File;
+import com.restwebservice.cathibot.model.TaxFile;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
 
-public interface FileDao  extends CrudRepository<File, Integer> {
-    File findByFileId(int fileId);
-    File deleteByFileId(int fileId);
+@Repository
+public interface FileDao  extends CrudRepository<TaxFile, Integer> {
+    TaxFile findByFileId(int fileId);
+    TaxFile deleteByFileId(int fileId);
 }
